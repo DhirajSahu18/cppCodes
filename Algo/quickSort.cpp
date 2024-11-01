@@ -3,26 +3,35 @@ using namespace std;
 
 class Solution {
 public:
-    // Partition function for quick sort
+    // Partition function using the first element as the pivot
     int partition(int arr[], int low, int high) {
-        int pivot = arr[high];  // Choosing the last element as the pivot
-        int i = low - 1;         // Index of smaller element
+        int pivot = arr[low];  // Choosing the first element as the pivot
+        int i = low + 1;
+        int j = high;
 
-        for (int j = low; j < high; j++) {
-            // If current element is smaller than or equal to pivot
-            if (arr[j] < pivot) {
+        while (i <= j) {
+            // Find an element larger than the pivot from the left side
+            while (i <= j && arr[i] <= pivot) {
                 i++;
+            }
+            // Find an element smaller than the pivot from the right side
+            while (i <= j && arr[j] > pivot) {
+                j--;
+            }
+            // Swap elements at i and j if they are out of place
+            if (i < j) {
                 std::swap(arr[i], arr[j]);
             }
         }
-        std::swap(arr[i + 1], arr[high]);
-        return i + 1;  // Returning the pivot index
+        // Place pivot in its correct position
+        std::swap(arr[low], arr[j]);
+        return j;  // Return the index of the pivot
     }
 
-    // Function to perform quick sort
+    // QuickSort function
     void quickSort(int arr[], int low, int high) {
         if (low < high) {
-            // Partition the array and get the pivot index
+            // Partition the array around the first element pivot
             int pi = partition(arr, low, high);
 
             // Recursively sort elements before and after partition
